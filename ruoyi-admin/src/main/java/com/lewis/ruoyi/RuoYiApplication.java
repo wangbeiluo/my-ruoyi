@@ -1,8 +1,11 @@
 package com.lewis.ruoyi;
 
+import com.lewis.ruoyi.common.config.RuoYiConfig;
+import com.lewis.ruoyi.common.utils.spring.SpringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author lewis
@@ -24,5 +27,6 @@ public class RuoYiApplication {
                 " |  | \\ `'   /|   `-'  /           \n" +
                 " |  |  \\    /  \\      /           \n" +
                 " ''-'   `'-'    `-..-'              ");
+
     }
 }
