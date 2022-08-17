@@ -8,6 +8,7 @@ import com.lewis.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -110,6 +111,16 @@ public class SysUser extends BaseEntity
         this.userId = userId;
     }
 
+    public boolean isAdmin()
+    {
+        return isAdmin(this.userId);
+    }
+
+    public static boolean isAdmin(Long userId)
+    {
+        return userId != null && 1L == userId;
+    }
+
     public Long getDeptId()
     {
         return deptId;
@@ -150,6 +161,7 @@ public class SysUser extends BaseEntity
         this.email = email;
     }
 
+    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
     public String getPhonenumber()
     {
         return phonenumber;

@@ -6,6 +6,7 @@ import com.lewis.ruoyi.common.core.domain.model.LoginUser;
 import com.lewis.ruoyi.common.core.redis.RedisCache;
 import com.lewis.ruoyi.common.utils.ServletUtils;
 import com.lewis.ruoyi.common.utils.StringUtils;
+import com.lewis.ruoyi.common.utils.ip.AddressUtils;
 import com.lewis.ruoyi.common.utils.ip.IpUtils;
 import com.lewis.ruoyi.common.utils.uuid.IdUtils;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -127,6 +128,22 @@ public class TokenService
     }
 
     /**
+     * 验证令牌有效期，相差不足20分钟，自动刷新缓存
+     *
+     * @param loginUser
+     */
+    public void verifyToken(LoginUser loginUser)
+    {
+        long expireTime = loginUser.getExpireTime();
+        long currentTime = System.currentTimeMillis();
+        if (expireTime - currentTime <= MILLIS_MINUTE_TEN)
+        {
+            refreshToken(loginUser);
+        }
+    }
+
+
+    /**
      * 刷新令牌有效期
      *
      * @param loginUser
@@ -150,7 +167,9 @@ public class TokenService
         UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         loginUser.setIpaddr(ip);
-//        loginUser.setLoginLocation();
+        loginUser.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
+        loginUser.setBrowser(userAgent.getBrowser().getName());
+        loginUser.setOs(userAgent.getOperatingSystem().getName());
     }
 
     /**
